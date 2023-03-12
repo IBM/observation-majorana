@@ -1,8 +1,9 @@
 ## Supplementary code for "Observing and braiding topological Majorana modes on programmable quantum simulators"
 
-**Authors: Nikhil Harle\*, Oles Shtanko, Ramis Movassagh**
+**Authors: Nikhil Harle\*, Oles Shtanko\**, Ramis Movassagh**
 
-\* primary contact: nikhil.calvin@gmail.com
+\* nikhil.calvin@gmail.com
+\** oles.shtanko@ibm.com
 
 This code implements a simulation of Floquet Majorana modes on IBM's superconducting qubits through Qiskit. It accompanies the manuscript [Observing and braiding topological Majorana modes on programmable quantum simulators](https://arxiv.org/abs/2203.15083).
 
