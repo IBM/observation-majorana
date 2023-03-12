@@ -1,4 +1,5 @@
-## Supplementary code for "Observing and braiding topological Majorana modes on programmable quantum simulators"
+## Supplementary code\
+for "Observing and braiding topological Majorana modes on programmable quantum simulators"
 
 **Authors: Nikhil Harle\*, Oles Shtanko\**, Ramis Movassagh**
 
