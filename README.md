@@ -5,7 +5,7 @@
 \* nikhil.calvin@gmail.com\
 \** oles.shtanko@ibm.com
 
-This code accompanies the manuscript [Observing and braiding topological Majorana modes on programmable quantum simulators](https://arxiv.org/abs/2203.15083).
+Manuscript available at: [https://arxiv.org/abs/2203.15083](https://arxiv.org/abs/2203.15083).
 
 **Abstract:**
 > Despite its great promise of fault tolerance, the simplest demonstration of topological quantum computation remains elusive. Majorana modes are the primitive building blocks and their experimental realization on various platforms is yet to be confirmed. This work presents an experimental and theoretical framework for the space-resolved detection and exchange of Majorana modes on programmable (noisy) quantum hardware. We have implemented our framework by performing a series of measurements on a driven Ising-type quantum spin model with tunable interactions, which confirm the existence of the topological Majorana modes and distinguishes them from trivial modes. Lastly, we propose and demonstrate a novel technique for braiding the Majorana modes which results in the correct statistics but decreases the magnitude of the signal. The present work may be seen as the first reliable observation of Majorana modes on existing quantum hardware.
