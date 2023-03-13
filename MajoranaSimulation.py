@@ -46,15 +46,14 @@ class MajoranaSimulation:
                                if True, overrides the current account and loads the new account from api_key.
         """
         #if it is the user's first time using this package OR if they wish to load a new account, they should set reload to TRUE; else, set it to FALSE
-        if api_key == None: 
+        if api_key == None:
             if self.api_key == None:
                 raise KeyError("No Qiskit API key specified. Please input a valid API key. See the following link for more details: https://quantum-computing.ibm.com/lab/docs/iql/manage/account/ibmq")
             else:
                 api_key = self.api_key
         if reload == True:
             IBMQ.save_account(api_key,overwrite=True)
-        else:
-            IBMQ.load_account()
+        IBMQ.load_account()
         
 
     def execute(self):
@@ -346,33 +345,54 @@ class MajoranaSimulation:
             n_cycles = fourier_end
 
         params_dict = {'alpha': alpha_fraction, 'regime': self.frequency, 'num_qubits': mc.n_qubits, 'num gate cycles': n_cycles, 'num_shots': mc.n_avgs, 'num_runs': n_runs, 'device': self.backend, 'backend_to_simulate':self.backend_to_simulate, 'noise_type': self.noise_type, 'layout':self.layout, 'theta': mc.theta/np.pi, 'phi': mc.phi/np.pi, 'eta': eta_fraction, 'experiment': self.experiment}
-        results_dict = {'x_axis':range(mc.n_qubits), 
-                        'left ZX unbraided (theory)': left_majorana_tnormed[:mc.n_qubits],
-                        'left ZY unbraided (theory)': left_majorana_tnormed[mc.n_qubits:], 
-                        'right ZX unbraided (theory)': right_majorana_tnormed[:mc.n_qubits],
-                        'right ZY unbraided (theory)': right_majorana_tnormed[mc.n_qubits:], 
-                        'left ZX braided (theory)': left_bmajorana_tnormed[:mc.n_qubits],
-                        'left ZY braided (theory)': left_bmajorana_tnormed[mc.n_qubits:],
-                        'right ZX braided (theory)': right_bmajorana_tnormed[:mc.n_qubits],
-                        'right ZY braided (theory)': right_bmajorana_tnormed[mc.n_qubits:],
-                        
-                        'left ZX unbraided (expt)': left_majorana_normed[:mc.n_qubits],
-                        'left ZY unbraided (expt)': left_majorana_normed[mc.n_qubits:], 
-                        'right ZX unbraided (expt)': right_majorana_normed[:mc.n_qubits],
-                        'right ZY unbraided (expt)': right_majorana_normed[mc.n_qubits:], 
-                        'left ZX unbraided std (expt)': left_uerror_normed[:mc.n_qubits],
-                        'left ZY unbraided std (expt)': left_uerror_normed[mc.n_qubits:],
-                        'right ZX unbraided std (expt)': right_uerror_normed[:mc.n_qubits],
-                        'right ZY unbraided std (expt)': right_uerror_normed[mc.n_qubits:],
-                        
-                        'left ZX braided (expt)': left_bmajorana_normed[:mc.n_qubits],
-                        'left ZY braided (expt)': left_bmajorana_normed[mc.n_qubits:],
-                        'right ZX braided (expt)': right_bmajorana_normed[:mc.n_qubits],
-                        'right ZY braided (expt)': right_bmajorana_normed[mc.n_qubits:],
-                        'left ZX braided std (expt)': left_error_normed[:mc.n_qubits],
-                        'left ZY braided std (expt)': left_error_normed[mc.n_qubits:],
-                        'right ZX braided std (expt)': right_error_normed[:mc.n_qubits],
-                        'right ZY braided std (expt)': right_error_normed[mc.n_qubits:]}
+        if self.n_runs == 1:
+            results_dict = {'x_axis':range(mc.n_qubits), 
+                            'left ZX unbraided (theory)': left_majorana_tnormed[:mc.n_qubits],
+                            'left ZY unbraided (theory)': left_majorana_tnormed[mc.n_qubits:], 
+                            'right ZX unbraided (theory)': right_majorana_tnormed[:mc.n_qubits],
+                            'right ZY unbraided (theory)': right_majorana_tnormed[mc.n_qubits:], 
+                            'left ZX braided (theory)': left_bmajorana_tnormed[:mc.n_qubits],
+                            'left ZY braided (theory)': left_bmajorana_tnormed[mc.n_qubits:],
+                            'right ZX braided (theory)': right_bmajorana_tnormed[:mc.n_qubits],
+                            'right ZY braided (theory)': right_bmajorana_tnormed[mc.n_qubits:],
+                            
+                            'left ZX unbraided (expt)': left_majorana_normed[:mc.n_qubits],
+                            'left ZY unbraided (expt)': left_majorana_normed[mc.n_qubits:], 
+                            'right ZX unbraided (expt)': right_majorana_normed[:mc.n_qubits],
+                            'right ZY unbraided (expt)': right_majorana_normed[mc.n_qubits:],
+                            
+                            'left ZX braided (expt)': left_bmajorana_normed[:mc.n_qubits],
+                            'left ZY braided (expt)': left_bmajorana_normed[mc.n_qubits:],
+                            'right ZX braided (expt)': right_bmajorana_normed[:mc.n_qubits],
+                            'right ZY braided (expt)': right_bmajorana_normed[mc.n_qubits:]}
+        else:
+            results_dict = {'x_axis':range(mc.n_qubits), 
+                            'left ZX unbraided (theory)': left_majorana_tnormed[:mc.n_qubits],
+                            'left ZY unbraided (theory)': left_majorana_tnormed[mc.n_qubits:], 
+                            'right ZX unbraided (theory)': right_majorana_tnormed[:mc.n_qubits],
+                            'right ZY unbraided (theory)': right_majorana_tnormed[mc.n_qubits:], 
+                            'left ZX braided (theory)': left_bmajorana_tnormed[:mc.n_qubits],
+                            'left ZY braided (theory)': left_bmajorana_tnormed[mc.n_qubits:],
+                            'right ZX braided (theory)': right_bmajorana_tnormed[:mc.n_qubits],
+                            'right ZY braided (theory)': right_bmajorana_tnormed[mc.n_qubits:],
+                            
+                            'left ZX unbraided (expt)': left_majorana_normed[:mc.n_qubits],
+                            'left ZY unbraided (expt)': left_majorana_normed[mc.n_qubits:], 
+                            'right ZX unbraided (expt)': right_majorana_normed[:mc.n_qubits],
+                            'right ZY unbraided (expt)': right_majorana_normed[mc.n_qubits:], 
+                            'left ZX unbraided std (expt)': left_uerror_normed[:mc.n_qubits],
+                            'left ZY unbraided std (expt)': left_uerror_normed[mc.n_qubits:],
+                            'right ZX unbraided std (expt)': right_uerror_normed[:mc.n_qubits],
+                            'right ZY unbraided std (expt)': right_uerror_normed[mc.n_qubits:],
+                            
+                            'left ZX braided (expt)': left_bmajorana_normed[:mc.n_qubits],
+                            'left ZY braided (expt)': left_bmajorana_normed[mc.n_qubits:],
+                            'right ZX braided (expt)': right_bmajorana_normed[:mc.n_qubits],
+                            'right ZY braided (expt)': right_bmajorana_normed[mc.n_qubits:],
+                            'left ZX braided std (expt)': left_error_normed[:mc.n_qubits],
+                            'left ZY braided std (expt)': left_error_normed[mc.n_qubits:],
+                            'right ZX braided std (expt)': right_error_normed[:mc.n_qubits],
+                            'right ZY braided std (expt)': right_error_normed[mc.n_qubits:]}
         full_data_dict = {'expval data': full_expval_data, 'raw data': full_unavgd_expval_data}
         return results_dict, params_dict, full_data_dict
     
@@ -417,16 +437,6 @@ class MajoranaSimulation:
         ZX_right_expt_brd = self.results['right ZX braided (expt)']
         ZY_right_expt_brd = self.results['right ZY braided (expt)']
 
-        ZX_left_expt_brd_std = self.results['left ZX braided std (expt)']
-        ZY_left_expt_brd_std = self.results['left ZY braided std (expt)']
-        ZX_right_expt_brd_std = self.results['right ZX braided std (expt)']
-        ZY_right_expt_brd_std = self.results['right ZY braided std (expt)']
-
-        ZX_left_expt_unbrd_std = self.results['left ZX unbraided std (expt)']
-        ZY_left_expt_unbrd_std = self.results['left ZY unbraided std (expt)']
-        ZX_right_expt_unbrd_std = self.results['right ZX unbraided std (expt)']
-        ZY_right_expt_unbrd_std = self.results['right ZY unbraided std (expt)']
-
         x = np.array(self.results['x_axis'])+1
 
         # plotting data
@@ -440,28 +450,46 @@ class MajoranaSimulation:
         ax[1,0].set_xticks(x)
         ax[1,1].set_xticks(x)
 
-        ax[0,0].errorbar(x,ZX_left_expt_unbrd,yerr = ZX_left_expt_unbrd_std,capsize=4.0,
-                        marker = 's',ms=3,lw = 0,elinewidth=1,c=col[0])#,alpha=0.5)
-        ax[0,0].errorbar(x,ZY_left_expt_unbrd,yerr = ZY_left_expt_unbrd_std,capsize=4.0,
-                        marker = 'o',ms=4,lw = 0,elinewidth=1,c=col[1])#,alpha=0.5)
-        ax[1,0].errorbar(x,ZX_right_expt_unbrd,yerr = ZX_right_expt_unbrd_std,capsize=4.0,
-                        marker = 's',ms=3,lw = 0,elinewidth=1,c=col[2])
-        ax[1,0].errorbar(x,ZY_right_expt_unbrd,yerr = ZY_right_expt_unbrd_std,capsize=4.0,
-                        marker = 'o',ms=3,lw = 0,elinewidth=1,c=col[3])
+        try:
+            ZX_left_expt_brd_std = self.results['left ZX braided std (expt)']
+            ZY_left_expt_brd_std = self.results['left ZY braided std (expt)']
+            ZX_right_expt_brd_std = self.results['right ZX braided std (expt)']
+            ZY_right_expt_brd_std = self.results['right ZY braided std (expt)']
+
+            ZX_left_expt_unbrd_std = self.results['left ZX unbraided std (expt)']
+            ZY_left_expt_unbrd_std = self.results['left ZY unbraided std (expt)']
+            ZX_right_expt_unbrd_std = self.results['right ZX unbraided std (expt)']
+            ZY_right_expt_unbrd_std = self.results['right ZY unbraided std (expt)']
+            ax[0,0].errorbar(x,ZX_left_expt_unbrd,yerr = ZX_left_expt_unbrd_std,capsize=4.0,
+                            marker = 's',ms=3,lw = 0,elinewidth=1,c=col[0])#,alpha=0.5)
+            ax[0,0].errorbar(x,ZY_left_expt_unbrd,yerr = ZY_left_expt_unbrd_std,capsize=4.0,
+                            marker = 'o',ms=4,lw = 0,elinewidth=1,c=col[1])#,alpha=0.5)
+            ax[1,0].errorbar(x,ZX_right_expt_unbrd,yerr = ZX_right_expt_unbrd_std,capsize=4.0,
+                            marker = 's',ms=3,lw = 0,elinewidth=1,c=col[2])
+            ax[1,0].errorbar(x,ZY_right_expt_unbrd,yerr = ZY_right_expt_unbrd_std,capsize=4.0,
+                            marker = 'o',ms=3,lw = 0,elinewidth=1,c=col[3])
+            ax[0,1].errorbar(x,ZX_left_expt_brd,yerr = ZX_left_expt_brd_std,capsize=4.0,
+                        marker = 's',ms=3,lw = 0,elinewidth=1,c=col[1])#,alpha=0.5)
+            ax[0,1].errorbar(x,ZY_left_expt_brd,yerr = ZY_left_expt_brd_std,capsize=4.0,
+                            marker = 'o',ms=4,lw = 0,elinewidth=1,c=col[0])#,alpha=0.5)
+            ax[1,1].errorbar(x,ZX_right_expt_brd,yerr = ZX_right_expt_brd_std,capsize=4.0,
+                            marker = 's',ms=3,lw = 0,elinewidth=1,c=col[3])
+            ax[1,1].errorbar(x,ZY_right_expt_brd,yerr = ZY_right_expt_brd_std,capsize=4.0,
+                            marker = 'o',ms=3,lw = 0,elinewidth=1,c=col[2])
+        except KeyError:
+            ax[0,0].plot(x,ZX_left_expt_unbrd,marker = 's',ms=3,lw = 0,c=col[0])#,alpha=0.5)
+            ax[0,0].plot(x,ZY_left_expt_unbrd,marker = 'o',ms=4,lw = 0,c=col[1])#,alpha=0.5)
+            ax[1,0].plot(x,ZX_right_expt_unbrd,marker = 's',ms=3,lw = 0,c=col[2])
+            ax[1,0].plot(x,ZY_right_expt_unbrd,marker = 'o',ms=3,lw = 0,c=col[3])
+            ax[0,1].plot(x,ZX_left_expt_brd,marker = 's',ms=3,lw = 0,c=col[1])#,alpha=0.5)
+            ax[0,1].plot(x,ZY_left_expt_brd,marker = 'o',ms=4,lw = 0,c=col[0])#,alpha=0.5)
+            ax[1,1].plot(x,ZX_right_expt_brd,marker = 's',ms=3,lw = 0,c=col[3])
+            ax[1,1].plot(x,ZY_right_expt_brd,marker = 'o',ms=3,lw = 0,c=col[2])
 
         ax[0,1].plot(x,ZX_left_theory_brd,c=col[1],ls='--',label = 'right odd')
         ax[0,1].plot(x,ZY_left_theory_brd,c=col[0],ls='-',label = 'right odd')
         ax[1,1].plot(x,ZX_right_theory_brd,c=col[3],ls='--',label = 'right odd')
         ax[1,1].plot(x,ZY_right_theory_brd,c=col[2],ls='-',label = 'right odd')
-
-        ax[0,1].errorbar(x,ZX_left_expt_brd,yerr = ZX_left_expt_brd_std,capsize=4.0,
-                        marker = 's',ms=3,lw = 0,elinewidth=1,c=col[1])#,alpha=0.5)
-        ax[0,1].errorbar(x,ZY_left_expt_brd,yerr = ZY_left_expt_brd_std,capsize=4.0,
-                        marker = 'o',ms=4,lw = 0,elinewidth=1,c=col[0])#,alpha=0.5)
-        ax[1,1].errorbar(x,ZX_right_expt_brd,yerr = ZX_right_expt_brd_std,capsize=4.0,
-                        marker = 's',ms=3,lw = 0,elinewidth=1,c=col[3])
-        ax[1,1].errorbar(x,ZY_right_expt_brd,yerr = ZY_right_expt_brd_std,capsize=4.0,
-                        marker = 'o',ms=3,lw = 0,elinewidth=1,c=col[2])
 
         ax[0,0].legend()
         ax[1,0].legend()
@@ -472,8 +500,16 @@ class MajoranaSimulation:
     def init_mc(self):
         """ Calls MajoranaCircuit code and sets parameters from current MajoranaSimulation class attributes
         """
-        
+        # making MajoranaCircuit object
         mc = MajoranaCircuit(self.api_key, self.hub,self.group,self.project)
+
+        # setting initialization parameters
+        mc.hub = self.hub
+        mc.group = self.group
+        mc.project = self.project
+        mc.api_key = self.api_key
+
+        # setting experiment parameters
         mc.n_qubits = self.n_qubits
         mc.n_cycles_total = self.n_cycles
         mc.n_avgs = self.n_shots
@@ -771,9 +807,13 @@ class MajoranaSimulation:
 
         # saving to file
         params_dict = {'type': '{} {}'.format(mc.meas_qubit, mc.meas_type), 'regime': self.frequency, 'num_qubits': mc.n_qubits, 'num gate cycles': n_cycles, 'num_shots': mc.n_avgs, 'num_runs': self.n_runs, 'device': self.backend, 'backend_to_simulate':self.backend_to_simulate, 'noise_type': self.noise_type, 'layout':self.layout, 'theta': mc.theta/np.pi, 'phi': mc.phi/np.pi, 'phi edge':phi_edge, 'theta_edge':theta_edge, 'eta': mc.eta, 'init edge state': '2|0> + 3i|1>', 'experiment': self.experiment}
-        results_dict = {'x_axis':range(mc.n_qubits),
-                    'decoupled edge fermion':avg_decop_array,'coupled majorana mode':avg_cop_array,
-                    'decoupled errorbars':error_decop,'coupled errorbars':error_cop}
+        if self.n_runs == 1:
+            results_dict = {'x_axis':range(mc.n_qubits),
+                            'decoupled edge fermion':avg_decop_array,'coupled majorana mode':avg_cop_array}
+        else:
+            results_dict = {'x_axis':range(mc.n_qubits),
+                            'decoupled edge fermion':avg_decop_array,'coupled majorana mode':avg_cop_array,
+                            'decoupled errorbars':error_decop,'coupled errorbars':error_cop}
         full_data_dict = {'expval data': full_expval_data, 'raw data': full_unavgd_expval_data}
         return results_dict, params_dict, full_data_dict
     
@@ -799,14 +839,18 @@ class MajoranaSimulation:
         n_qubits = self.params['num_qubits']
         avg_decop_array = self.results['decoupled edge fermion']
         avg_cop_array = self.results['coupled majorana mode']
-        error_decop = self.results['decoupled errorbars']
-        error_cop = self.results['coupled errorbars']
 
         fig,ax = plt.subplots(figsize = (4,4))
         x_label_list = np.arange(1,n_qubits+1,2)+1
         vmax = max(np.max(avg_decop_array),np.max(avg_cop_array))
-        ax.errorbar(range(n_qubits),avg_decop_array,yerr = error_decop, marker = 'o',ms=8,lw = 1,c='b',capsize=4.0, label='Decoupled Edge Fermion')
-        ax.errorbar(range(n_qubits),avg_cop_array,yerr = error_cop,marker = 's',ms=7,lw = 1,c='r',capsize=4.0, label='Coupled Majorana Mode')
+        try:
+            error_decop = self.results['decoupled errorbars']
+            error_cop = self.results['coupled errorbars']
+            ax.errorbar(range(n_qubits),avg_decop_array,yerr = error_decop, marker = 'o',ms=8,lw = 1,c='b',capsize=4.0, label='Decoupled Edge Fermion')
+            ax.errorbar(range(n_qubits),avg_cop_array,yerr = error_cop,marker = 's',ms=7,lw = 1,c='r',capsize=4.0, label='Coupled Majorana Mode')
+        except KeyError:
+            ax.plot(range(n_qubits), avg_decop_array, marker = 'o',ms=8,lw = 1,c='b', label='Decoupled Edge Fermion')
+            ax.plot(range(n_qubits),avg_cop_array, marker = 's',ms=7,lw = 1,c='r', label='Coupled Majorana Mode')
         ax.set_xticks(np.arange(1,n_qubits+1,2))
         ax.set_xticklabels(x_label_list)
         ax.set_xlabel(r'Position $x$')
