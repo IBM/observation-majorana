@@ -5,7 +5,7 @@
 \* nikhil.calvin@gmail.com\
 \** oles.shtanko@ibm.com
 
-Paper link: [Nat Commun 14, 2286 (2023)](https://www.nature.com/articles/s41467-023-37725-0)\
+Publication: [Nat Commun 14, 2286 (2023)](https://www.nature.com/articles/s41467-023-37725-0)\
 Preprint: [https://arxiv.org/abs/2203.15083](https://arxiv.org/abs/2203.15083)
 
 **Abstract:**
